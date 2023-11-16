@@ -9,14 +9,14 @@ import SubObject from "./examples/SubObject";
 function App() {
   return (
     <>
-      <div className="mx-auto my-6 max-w-lg space-y-8">
+      <div className="mx-auto my-6 max-w-2xl space-y-8">
         <Basics />
-        <InputWithoutLabel />
-        <SubObject />
-        <Controlled />
-        <ConfirmPassword />
-        <Api />
-        <Array />
+        {/*<InputWithoutLabel />*/}
+        {/*<SubObject />*/}
+        {/*<Controlled />*/}
+        {/*<ConfirmPassword />*/}
+        {/*<Api />*/}
+        {/*<Array />*/}
       </div>
     </>
   );

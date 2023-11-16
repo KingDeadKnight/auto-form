@@ -18,24 +18,38 @@ enum Sports {
 }
 
 const formSchema = z.object({
-  username: z
-    .string({
-      required_error: "Username is required.",
-    })
-    .min(2, {
-      message: "Username must be at least 2 characters.",
+
+    firstRow: z.object({
+        username: z
+            .string({
+                required_error: "Username is required.",
+            })
+            .min(2, {
+                message: "Username must be at least 2 characters.",
+            }),
+        password: z
+            .string({
+                required_error: "Password is required.",
+            })
+            .describe("Your secure password")
+            .min(8, {
+                message: "Password must be at least 8 characters.",
+            }),
+    }),
+    secondRow: z.object({
+        name: z
+            .string({
+                required_error: "Username is required.",
+            })
+            .min(2, {
+                message: "Username must be at least 2 characters.",
+            }),
+        word: z
+            .enum(["not many", "a few", "a lot", "too many"])
+            .describe("How many marshmallows fit in your mouth?"),
     }),
 
-  password: z
-    .string({
-      required_error: "Password is required.",
-    })
-    .describe("Your secure password")
-    .min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-
-  favouriteNumber: z.coerce
+  /*favouriteNumber: z.coerce
     .number({
       invalid_type_error: "Favourite number must be a number.",
     })
@@ -80,7 +94,7 @@ const formSchema = z.object({
     })
     .optional(),
 
-  customParent: z.string().optional(),
+  customParent: z.string().optional(),*/
 });
 
 function Basics() {
@@ -100,62 +114,71 @@ function Basics() {
               formSchema={formSchema}
               onSubmit={console.log}
               fieldConfig={{
-                password: {
-                  inputProps: {
-                    type: "password",
-                    placeholder: "••••••••",
+                  firstRow: {
+                    objectLayoutType: "columns",
+                    password: {
+                      inputProps: {
+                        type: "password",
+                        placeholder: "••••••••",
+                      },
+                    },
                   },
-                },
-                favouriteNumber: {
-                  description: "Your favourite number between 1 and 10.",
-                },
-                acceptTerms: {
-                  inputProps: {
-                    required: true,
-                  },
-                  description: (
-                    <>
-                      I agree to the{" "}
-                      <button
-                        className="text-primary underline"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          alert("Terms and conditions clicked.");
-                        }}
-                      >
-                        terms and conditions
-                      </button>
-                      .
-                    </>
-                  ),
-                },
-
-                birthday: {
-                  description: "We need your birthday to send you a gift.",
-                },
-
-                sendMeMails: {
-                  fieldType: "switch",
-                },
-
-                bio: {
-                  fieldType: "textarea",
-                },
-
-                marshmallows: {
-                  fieldType: "radio",
-                },
-
-                customParent: {
-                  renderParent: ({ children }) => (
-                    <div className="flex items-end gap-3">
-                      <div className="flex-1">{children}</div>
-                      <div>
-                        <Button type="button">Check</Button>
-                      </div>
-                    </div>
-                  ),
-                },
+                  secondRow: {
+                      objectLayoutType: "columns",
+                      word: {
+                          fieldType: "radio",
+                      }
+                  }
+                // favouriteNumber: {
+                //   description: "Your favourite number between 1 and 10.",
+                // },
+                // acceptTerms: {
+                //   inputProps: {
+                //     required: true,
+                //   },
+                //   description: (
+                //     <>
+                //       I agree to the{" "}
+                //       <button
+                //         className="text-primary underline"
+                //         onClick={(e) => {
+                //           e.preventDefault();
+                //           alert("Terms and conditions clicked.");
+                //         }}
+                //       >
+                //         terms and conditions
+                //       </button>
+                //       .
+                //     </>
+                //   ),
+                // },
+                //
+                // birthday: {
+                //   description: "We need your birthday to send you a gift.",
+                // },
+                //
+                // sendMeMails: {
+                //   fieldType: "switch",
+                // },
+                //
+                // bio: {
+                //   fieldType: "textarea",
+                // },
+                //
+                // marshmallows: {
+                //   fieldType: "radio",
+                // },
+                //
+                // customParent: {
+                //   renderParent: ({ children }) => (
+                //     <div className="flex items-end gap-3">
+                //       <div className="flex-1">{children}</div>
+                //       <div>
+                //         <Button type="button">Check</Button>
+                //       </div>
+                //     </div>
+                //   ),
+                // },
               }}
             >
               <AutoFormSubmit>Send now</AutoFormSubmit>

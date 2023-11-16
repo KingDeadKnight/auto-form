@@ -1,6 +1,6 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { FieldConfig, FieldConfigItem } from "../types";
+import {FieldConfig, FieldConfigItem, ObjectConfig, ObjectConfigItem} from "../types";
 import {
   Accordion,
   AccordionContent,
@@ -14,8 +14,9 @@ import {
   zodToHtmlInputProps,
 } from "../utils";
 import { FormField } from "../../form";
-import { DEFAULT_ZOD_HANDLERS, INPUT_COMPONENTS } from "../config";
+import {DEFAULT_ZOD_HANDLERS, INPUT_COMPONENTS, OBJECT_TYPE} from "../config";
 import AutoFormArray from "./array";
+import AutoFormObjectColumns from "@/components/ui/auto-form/fields/object-columns.tsx";
 
 function DefaultParent({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
@@ -43,25 +44,47 @@ export default function AutoFormObject<
         const zodBaseType = getBaseType(item);
         const itemName = item._def.description ?? beautifyObjectName(name);
         const key = [...path, name].join(".");
+        const fieldConfigItem: FieldConfigItem = fieldConfig?.[name] ?? {};
 
         if (zodBaseType === "ZodObject") {
-          return (
-            <AccordionItem value={name} key={key}>
-              <AccordionTrigger>{itemName}</AccordionTrigger>
-              <AccordionContent className="p-2">
-                <AutoFormObject
-                  schema={item as unknown as z.ZodObject<any, any>}
-                  form={form}
-                  fieldConfig={
-                    (fieldConfig?.[name] ?? {}) as FieldConfig<
-                      z.infer<typeof item>
-                    >
-                  }
-                  path={[...path, name]}
-                />
-              </AccordionContent>
-            </AccordionItem>
-          );
+          const objectType =
+              fieldConfigItem.objectLayoutType ??
+              "fallback";
+          switch (objectType) {
+              // @ts-ignore
+              case "columns":
+                return (
+                    <AutoFormObjectColumns
+                        schema={item as unknown as z.ZodObject<any, any>}
+                        form={form}
+                        fieldConfig={
+                            (fieldConfig?.[name] ?? {}) as FieldConfig<
+                                z.infer<typeof item>
+                            >
+                        }
+                        path={[...path, name]}
+                    />
+                )
+              case "fallback":
+              default:
+                  return (
+                      <AccordionItem value={name} key={key}>
+                          <AccordionTrigger>{itemName}</AccordionTrigger>
+                          <AccordionContent className="p-2">
+                              <AutoFormObject
+                                  schema={item as unknown as z.ZodObject<any, any>}
+                                  form={form}
+                                  fieldConfig={
+                                      (fieldConfig?.[name] ?? {}) as FieldConfig<
+                                          z.infer<typeof item>
+                                      >
+                                  }
+                                  path={[...path, name]}
+                              />
+                          </AccordionContent>
+                      </AccordionItem>
+                  );
+          }
         }
         if (zodBaseType === "ZodArray") {
           return (
@@ -75,7 +98,7 @@ export default function AutoFormObject<
           );
         }
 
-        const fieldConfigItem: FieldConfigItem = fieldConfig?.[name] ?? {};
+
         const zodInputProps = zodToHtmlInputProps(item);
         const isRequired =
           zodInputProps.required ||

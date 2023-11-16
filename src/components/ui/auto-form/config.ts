@@ -18,6 +18,8 @@ export const INPUT_COMPONENTS = {
   fallback: AutoFormInput,
 };
 
+export type OBJECT_TYPE = "columns" | "fallback";
+
 /**
  * Define handlers for specific Zod types.
  * You can expand this object to support more types.

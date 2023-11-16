@@ -1,6 +1,6 @@
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import * as z from "zod";
-import { INPUT_COMPONENTS } from "./config";
+import {INPUT_COMPONENTS, OBJECT_TYPE} from "./config";
 
 export type FieldConfigItem = {
   description?: React.ReactNode;
@@ -10,6 +10,7 @@ export type FieldConfigItem = {
   fieldType?:
     | keyof typeof INPUT_COMPONENTS
     | React.FC<AutoFormInputComponentProps>;
+  objectLayoutType?: OBJECT_TYPE;
 
   renderParent?: (props: {
     children: React.ReactNode;
