@@ -9,6 +9,7 @@ import {
 } from "../utils";
 import { FormField } from "../../form";
 import {DEFAULT_ZOD_HANDLERS, INPUT_COMPONENTS,} from "../config";
+import {cn} from "@/lib/utils.ts";
 
 function DefaultParent({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
@@ -20,17 +21,21 @@ export default function AutoFormObjectColumns<
   schema,
   form,
   fieldConfig,
+  rowDivProps,
   path = [],
 }: {
   schema: SchemaType | z.ZodEffects<SchemaType>;
   form: ReturnType<typeof useForm>;
   fieldConfig?: FieldConfig<z.infer<SchemaType>>;
+  rowDivProps: React.HTMLAttributes<HTMLDivElement>;
   path?: string[];
 }) {
   const { shape } = getBaseSchema<SchemaType>(schema);
+  const { className: _className, ...divPropsWithoutClassName } = rowDivProps;
+  const className = cn("flex space-x-2", _className);
 
   return (
-      <div className="flex space-x-2">
+      <div className={className} {...divPropsWithoutClassName}>
           {Object.keys(shape).map((name) => {
               const item = shape[name] as z.ZodAny;
               const zodBaseType = getBaseType(item);

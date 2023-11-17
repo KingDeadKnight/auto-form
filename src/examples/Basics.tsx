@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Button } from "../components/ui/button";
 
 enum Sports {
   Football = "Football/Soccer",
@@ -97,6 +96,10 @@ const formSchema = z.object({
   customParent: z.string().optional(),*/
 });
 
+const test : HTMLDivElement = {
+    id : 1
+}
+
 function Basics() {
   return (
     <>
@@ -115,7 +118,6 @@ function Basics() {
               onSubmit={console.log}
               fieldConfig={{
                   firstRow: {
-                    objectLayoutType: "columns",
                     password: {
                       inputProps: {
                         type: "password",
@@ -124,7 +126,6 @@ function Basics() {
                     },
                   },
                   secondRow: {
-                      objectLayoutType: "columns",
                       word: {
                           fieldType: "radio",
                       }
@@ -179,6 +180,18 @@ function Basics() {
                 //     </div>
                 //   ),
                 // },
+              }}
+              objectConfig={{
+                  firstRow: {
+                      layoutType: "row",
+                      divProps: {
+                          id: 1,
+                          className: "space-x-12"
+                      }
+                  },
+                  secondRow: {
+                      layoutType: "row"
+                  }
               }}
             >
               <AutoFormSubmit>Send now</AutoFormSubmit>

@@ -10,11 +10,14 @@ export type FieldConfigItem = {
   fieldType?:
     | keyof typeof INPUT_COMPONENTS
     | React.FC<AutoFormInputComponentProps>;
-  objectLayoutType?: OBJECT_TYPE;
-
   renderParent?: (props: {
     children: React.ReactNode;
   }) => React.ReactElement | null;
+};
+
+export type ObjectConfigItem = {
+    layoutType?: OBJECT_TYPE,
+    divProps?: React.HTMLAttributes<HTMLDivElement>;
 };
 
 export type FieldConfig<SchemaType extends z.infer<z.ZodObject<any, any>>> = {
@@ -23,6 +26,13 @@ export type FieldConfig<SchemaType extends z.infer<z.ZodObject<any, any>>> = {
     ? FieldConfig<z.infer<SchemaType[Key]>>
     : FieldConfigItem;
 };
+
+export type ObjectConfig<SchemaType extends z.infer<z.ZodObject<any, any>>> = {
+    // If SchemaType.key is an object, create a nested FieldConfig, otherwise FieldConfigItem
+    [Key in keyof SchemaType]?: SchemaType[Key] extends object
+        ? ObjectConfig<z.infer<SchemaType[Key]>>
+        : ObjectConfigItem;
+}
 
 /**
  * A FormInput component can handle a specific Zod type (e.g. "ZodBoolean")

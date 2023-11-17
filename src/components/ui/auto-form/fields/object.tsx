@@ -14,9 +14,9 @@ import {
   zodToHtmlInputProps,
 } from "../utils";
 import { FormField } from "../../form";
-import {DEFAULT_ZOD_HANDLERS, INPUT_COMPONENTS, OBJECT_TYPE} from "../config";
+import {DEFAULT_ZOD_HANDLERS, INPUT_COMPONENTS,} from "../config";
 import AutoFormArray from "./array";
-import AutoFormObjectColumns from "@/components/ui/auto-form/fields/object-columns.tsx";
+import AutoFormObjectRow from "./object-row";
 
 function DefaultParent({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
@@ -28,11 +28,13 @@ export default function AutoFormObject<
   schema,
   form,
   fieldConfig,
+  objectConfig,
   path = [],
 }: {
   schema: SchemaType | z.ZodEffects<SchemaType>;
   form: ReturnType<typeof useForm>;
   fieldConfig?: FieldConfig<z.infer<SchemaType>>;
+  objectConfig?: ObjectConfig<z.infer<SchemaType>>;
   path?: string[];
 }) {
   const { shape } = getBaseSchema<SchemaType>(schema);
@@ -47,14 +49,16 @@ export default function AutoFormObject<
         const fieldConfigItem: FieldConfigItem = fieldConfig?.[name] ?? {};
 
         if (zodBaseType === "ZodObject") {
+          const objectConfigItem: ObjectConfigItem = objectConfig?.[name] ?? {};
           const objectType =
-              fieldConfigItem.objectLayoutType ??
+              objectConfigItem?.layoutType ??
               "fallback";
           switch (objectType) {
               // @ts-ignore
-              case "columns":
+              case "row":
                 return (
-                    <AutoFormObjectColumns
+                    <AutoFormObjectRow
+                        key={key}
                         schema={item as unknown as z.ZodObject<any, any>}
                         form={form}
                         fieldConfig={
@@ -62,6 +66,7 @@ export default function AutoFormObject<
                                 z.infer<typeof item>
                             >
                         }
+                        rowDivProps={objectConfigItem?.divProps ?? {}}
                         path={[...path, name]}
                     />
                 )

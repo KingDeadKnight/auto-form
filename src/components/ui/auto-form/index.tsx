@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../button";
 import { cn } from "@/lib/utils";
 
-import { FieldConfig } from "./types";
+import {FieldConfig, ObjectConfig} from "./types";
 import {
   ZodObjectOrWrapped,
   getDefaultValues,
@@ -27,6 +27,7 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
   onParsedValuesChange,
   onSubmit: onSubmitProp,
   fieldConfig,
+  objectConfig,
   children,
   className,
 }: {
@@ -36,6 +37,7 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
   onParsedValuesChange?: (values: Partial<z.infer<SchemaType>>) => void;
   onSubmit?: (values: z.infer<SchemaType>) => void;
   fieldConfig?: FieldConfig<z.infer<SchemaType>>;
+  objectConfig?: ObjectConfig<z.infer<SchemaType>>;
   children?: React.ReactNode;
   className?: string;
 }) {
@@ -76,6 +78,7 @@ function AutoForm<SchemaType extends ZodObjectOrWrapped>({
           schema={objectFormSchema}
           form={form}
           fieldConfig={fieldConfig}
+          objectConfig={objectConfig}
         />
 
         {children}
