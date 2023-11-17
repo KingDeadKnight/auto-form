@@ -17,6 +17,7 @@ import { FormField } from "../../form";
 import {DEFAULT_ZOD_HANDLERS, INPUT_COMPONENTS,} from "../config";
 import AutoFormArray from "./array";
 import AutoFormObjectRow from "./object-row";
+import AutoFormObjectTabs from "./object-tabs";
 
 function DefaultParent({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
@@ -54,7 +55,6 @@ export default function AutoFormObject<
               objectConfigItem?.layoutType ??
               "fallback";
           switch (objectType) {
-              // @ts-ignore
               case "row":
                 return (
                     <AutoFormObjectRow
@@ -70,6 +70,23 @@ export default function AutoFormObject<
                         path={[...path, name]}
                     />
                 )
+              case "tabs":
+                  return (
+                      <AutoFormObjectTabs
+                          key={key}
+                          schema={item as unknown as z.ZodObject<any, any>}
+                          form={form}
+                          fieldConfig={
+                              (fieldConfig?.[name] ?? {}) as FieldConfig<
+                                  z.infer<typeof item>
+                              >
+                          }
+                          objectConfig={(objectConfig?.[name] ?? {}) as ObjectConfig<
+                              z.infer<typeof item>
+                          >}
+                          path={[...path, name]}
+                      />
+                  )
               case "fallback":
               default:
                   return (

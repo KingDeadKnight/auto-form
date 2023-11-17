@@ -47,58 +47,29 @@ const formSchema = z.object({
             .enum(["not many", "a few", "a lot", "too many"])
             .describe("How many marshmallows fit in your mouth?"),
     }),
-
-  /*favouriteNumber: z.coerce
-    .number({
-      invalid_type_error: "Favourite number must be a number.",
+    tabs: z.object({
+        fr: z.object({
+            secondRow: z.object({
+                name: z
+                    .string({
+                        required_error: "Username is required.",
+                    })
+                    .min(2, {
+                        message: "Username must be at least 2 characters.",
+                    }),
+                word: z
+                    .enum(["not many", "a few", "a lot", "too many"])
+                    .describe("How many marshmallows fit in your mouth?"),
+            }),
+        }).describe('Français'),
+        nl: z.object({
+            name: z
+                .string({
+                    required_error: "NameNL is required.",
+                }),
+        }).describe('Néerlandais')
     })
-    .min(1, {
-      message: "Favourite number must be at least 1.",
-    })
-    .max(10, {
-      message: "Favourite number must be at most 10.",
-    })
-    .default(1)
-    .optional(),
-
-  acceptTerms: z
-    .boolean()
-    .describe("Accept terms and conditions.")
-    .refine((value) => value, {
-      message: "You must accept the terms and conditions.",
-      path: ["acceptTerms"],
-    }),
-
-  sendMeMails: z.boolean().optional(),
-
-  birthday: z.coerce.date().optional(),
-
-  color: z.enum(["red", "green", "blue"]).optional(),
-
-  // Another enum example
-  marshmallows: z
-    .enum(["not many", "a few", "a lot", "too many"])
-    .describe("How many marshmallows fit in your mouth?"),
-
-  // Native enum example
-  sports: z.nativeEnum(Sports).describe("What is your favourite sport?"),
-
-  bio: z
-    .string()
-    .min(10, {
-      message: "Bio must be at least 10 characters.",
-    })
-    .max(160, {
-      message: "Bio must not be longer than 30 characters.",
-    })
-    .optional(),
-
-  customParent: z.string().optional(),*/
 });
-
-const test : HTMLDivElement = {
-    id : 1
-}
 
 function Basics() {
   return (
@@ -185,12 +156,19 @@ function Basics() {
                   firstRow: {
                       layoutType: "row",
                       divProps: {
-                          id: 1,
                           className: "space-x-12"
                       }
                   },
                   secondRow: {
                       layoutType: "row"
+                  },
+                  tabs: {
+                      layoutType: "tabs",
+                      fr: {
+                          secondRow: {
+                              layoutType: "row",
+                          }
+                      }
                   }
               }}
             >

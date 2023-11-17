@@ -18,7 +18,7 @@ export const INPUT_COMPONENTS = {
   fallback: AutoFormInput,
 };
 
-export type OBJECT_TYPE = "row" | "fallback";
+export type OBJECT_TYPE = "row" | "tabs" | "fallback";
 
 /**
  * Define handlers for specific Zod types.
