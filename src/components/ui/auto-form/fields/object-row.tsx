@@ -15,7 +15,7 @@ function DefaultParent({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-export default function AutoFormObjectColumns<
+export default function AutoFormObjectRow<
   SchemaType extends z.ZodObject<any, any>,
 >({
   schema,
